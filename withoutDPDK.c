@@ -57,6 +57,13 @@ int main() {
 
 
 /*
+compile : gcc -o dpdk_app withoutDPDK.c
+run : ./dpdk_app
+
+
 in other terminal 
+# 1. Install Scapy
+sudo pip3 install scapy
+# 2. Send Packets (Requires sudo for raw socket access)
 sudo python3 -c 'from scapy.all import *; send(IP(dst="127.0.0.1")/UDP(dport=8080)/Raw(load="Hello"), count=5)'
 */

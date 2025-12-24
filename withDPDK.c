@@ -85,17 +85,16 @@ sudo ./dpdk_app -l 1 --vdev=net_tap0 --no-huge
 --no-huge: Tells DPDK to use standard RAM instead of hugepages.
 --vdev=net_tap0: Tells DPDK to create a virtual TAP interface named dtap0 (which DPDK sees as Port 0).
 
-
+in other terminal
 # 1. Bring the virtual interface up
 sudo ip link set dtap0 up
 
-# 2. Send some packets to it (using ping)
+#Option-1. Send some packets to it (using ping)
 sudo tcpreplay --intf1=dtap0 --pps=10 some_pcap_file.pcap
-
-# OR just try pinging broadcast (might not work perfectly without IP assignment)
+#just try pinging broadcast (might not work perfectly without IP assignment)
 ping -I dtap0 255.255.255.255
 
-or in other terminal 
+#Option-2
 sudo pip3 install scapy
 sudo python3 -c 'from scapy.all import *; sendp(Ether()/IP(dst="1.1.1.1")/UDP(), iface="dtap0", count=5000)'     //Python traffic generator command
 */
