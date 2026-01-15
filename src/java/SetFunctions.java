@@ -20,7 +20,7 @@ public class SetFunctions {
         System.out.println("LinkedHashSet (insertion order): " + linkedHashSet);
         
         // TreeSet: Sorted order (natural/comparator), O(log n) operations, does NOT allow null
-        Set<String> treeSet = new TreeSet<>();
+        TreeSet<String> treeSet = new TreeSet<>();
         treeSet.add("Zebra");
         treeSet.add("Apple");
         treeSet.add("Mango");

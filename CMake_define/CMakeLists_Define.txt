@@ -1,0 +1,354 @@
+# CMakeLists.txt - Comprehensive CMake Example
+# This file demonstrates most CMake functionality with detailed explanations
+
+# ==============================================================================
+# 1. PROJECT SETUP AND CMAKE VERSION
+# ==============================================================================
+# Specify minimum CMake version required
+# VERSION_GREATER_EQUAL and other modern features require 3.12+
+cmake_minimum_required(VERSION 3.12...3.27)
+
+# Define project with name, version, description, homepage, and languages
+project(ComprehensiveCMakeExample
+    VERSION 1.2.3
+    DESCRIPTION "A comprehensive CMake example demonstrating major features"
+    HOMEPAGE_URL "https://github.com/rsys-adsingh/practice"
+    LANGUAGES CXX C
+)
+
+# ==============================================================================
+# 2. CMAKE POLICIES AND SETTINGS
+# ==============================================================================
+# Set policies for backward compatibility and modern behavior
+if(POLICY CMP0135)
+    cmake_policy(SET CMP0135 NEW)  # FetchContent timestamp policy
+endif()
+
+# Set C++ standard (11, 14, 17, 20, 23)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+# Set C standard
+set(CMAKE_C_STANDARD 11)
+
+# ==============================================================================
+# 3. BUILD TYPES AND CONFIGURATIONS
+# ==============================================================================
+# Set default build type if not specified
+if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+    message(STATUS "Setting build type to 'Release' as none was specified.")
+    set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build." FORCE)
+    # Set possible values for cmake-gui
+    set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS
+        "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
+endif()
+
+# ==============================================================================
+# 4. OPTIONS AND CACHE VARIABLES
+# ==============================================================================
+# Define user-configurable options
+option(BUILD_SHARED_LIBS "Build shared libraries" ON)
+option(BUILD_TESTING "Build tests" ON)
+option(BUILD_EXAMPLES "Build example programs" ON)
+option(BUILD_DOCS "Build documentation" OFF)
+option(ENABLE_COVERAGE "Enable code coverage" OFF)
+option(ENABLE_SANITIZERS "Enable sanitizers (address, UB)" OFF)
+
+# Cache variables (configurable by user)
+set(CUSTOM_INSTALL_PREFIX "/opt/myapp" CACHE PATH "Custom installation prefix")
+set(MAX_THREADS 4 CACHE STRING "Maximum number of threads")
+
+# ==============================================================================
+# 5. PLATFORM AND COMPILER DETECTION
+# ==============================================================================
+# Detect platform
+if(WIN32)
+    message(STATUS "Platform: Windows")
+    add_compile_definitions(PLATFORM_WINDOWS)
+elseif(APPLE)
+    message(STATUS "Platform: macOS")
+    add_compile_definitions(PLATFORM_MACOS)
+elseif(UNIX)
+    message(STATUS "Platform: Linux/Unix")
+    add_compile_definitions(PLATFORM_LINUX)
+endif()
+
+# Detect compiler
+if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+    message(STATUS "Compiler: GCC")
+elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    message(STATUS "Compiler: Clang")
+elseif(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
+    message(STATUS "Compiler: MSVC")
+endif()
+
+# ==============================================================================
+# 6. COMPILER FLAGS AND WARNINGS
+# ==============================================================================
+# Add compiler-specific flags
+if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+    add_compile_options(
+        -Wall -Wextra -Wpedantic
+        $<$<CONFIG:Debug>:-O0 -g3 -ggdb>
+        $<$<CONFIG:Release>:-O3 -DNDEBUG>
+    )
+elseif(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
+    add_compile_options(/W4 /WX)
+endif()
+
+# Sanitizers (if enabled)
+if(ENABLE_SANITIZERS)
+    add_compile_options(-fsanitize=address,undefined)
+    add_link_options(-fsanitize=address,undefined)
+endif()
+
+# ==============================================================================
+# 7. FIND PACKAGES AND DEPENDENCIES
+# ==============================================================================
+# Find required packages
+find_package(Threads REQUIRED)
+
+# Find optional packages with version requirements
+find_package(ZLIB 1.2)
+if(ZLIB_FOUND)
+    message(STATUS "Found ZLIB: ${ZLIB_VERSION}")
+endif()
+
+# ==============================================================================
+# 8. INCLUDE DIRECTORIES AND MODULES
+# ==============================================================================
+# Include standard modules
+include(GNUInstallDirs)      # Standard installation directories
+include(CMakePackageConfigHelpers)  # Package config helpers
+include(CheckIncludeFile)    # Check for header files
+include(CheckFunctionExists) # Check for functions
+include(GenerateExportHeader)  # Generate export macros
+
+# Add custom module path
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+
+# ==============================================================================
+# 9. CONFIGURE FILES AND HEADERS
+# ==============================================================================
+# Configure version header
+configure_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/config.h.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/include/config.h"
+    @ONLY
+)
+
+# ==============================================================================
+# 10. SOURCE FILES AND VARIABLES
+# ==============================================================================
+# Collect source files using different methods
+set(LIBRARY_SOURCES
+    src/library/core.cpp
+    src/library/utils.cpp
+    src/library/math.cpp
+)
+
+# Use file(GLOB) for headers (not recommended for sources in production)
+file(GLOB LIBRARY_HEADERS "include/*.h")
+
+# ==============================================================================
+# 11. LIBRARY TARGETS
+# ==============================================================================
+# Create a library (can be STATIC, SHARED, or MODULE)
+add_library(mylib ${LIBRARY_SOURCES})
+
+# Set library properties
+set_target_properties(mylib PROPERTIES
+    VERSION ${PROJECT_VERSION}
+    SOVERSION ${PROJECT_VERSION_MAJOR}
+    PUBLIC_HEADER "${LIBRARY_HEADERS}"
+    OUTPUT_NAME "mylib"
+    POSITION_INDEPENDENT_CODE ON
+)
+
+# Target include directories (PUBLIC, PRIVATE, INTERFACE)
+target_include_directories(mylib
+    PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+    PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/library
+)
+
+# Target compile definitions
+target_compile_definitions(mylib
+    PUBLIC
+        $<$<CONFIG:Debug>:DEBUG_MODE>
+    PRIVATE
+        MYLIB_BUILDING
+)
+
+# Target compile options
+target_compile_options(mylib PRIVATE
+    $<$<CXX_COMPILER_ID:GNU,Clang>:-fvisibility=hidden>
+)
+
+# Link libraries to target
+target_link_libraries(mylib
+    PUBLIC
+        Threads::Threads
+    PRIVATE
+        $<$<BOOL:${ZLIB_FOUND}>:ZLIB::ZLIB>
+)
+
+# Generate export header for DLL visibility
+generate_export_header(mylib
+    BASE_NAME MYLIB
+    EXPORT_FILE_NAME ${CMAKE_CURRENT_BINARY_DIR}/include/mylib_export.h
+)
+
+# ==============================================================================
+# 12. EXECUTABLE TARGETS
+# ==============================================================================
+# Create executable
+add_executable(myapp src/main.cpp)
+
+# Link executable to library
+target_link_libraries(myapp PRIVATE mylib)
+
+# Set executable properties
+set_target_properties(myapp PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+)
+
+# ==============================================================================
+# 13. CUSTOM COMMANDS AND TARGETS
+# ==============================================================================
+# Add custom command (runs when file is needed)
+add_custom_command(
+    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/generated.cpp
+    COMMAND ${CMAKE_COMMAND} -E echo "// Auto-generated file" > ${CMAKE_CURRENT_BINARY_DIR}/generated.cpp
+    COMMENT "Generating source file"
+    VERBATIM
+)
+
+# Add custom target (runs when explicitly built)
+add_custom_target(generate_files
+    COMMAND ${CMAKE_COMMAND} -E echo "Custom target executed"
+    COMMENT "Running custom target"
+)
+
+# ==============================================================================
+# 14. SUBDIRECTORIES
+# ==============================================================================
+# Add subdirectories (if they exist and you create them)
+# add_subdirectory(src)
+# add_subdirectory(examples)
+
+# ==============================================================================
+# 15. TESTING (CTest)
+# ==============================================================================
+if(BUILD_TESTING)
+    enable_testing()
+    
+    # Add simple test
+    add_test(NAME basic_test COMMAND myapp)
+    set_tests_properties(basic_test PROPERTIES
+        PASS_REGULAR_EXPRESSION "Success"
+        TIMEOUT 10
+    )
+    
+    # Add test with working directory
+    add_test(NAME config_test
+        COMMAND myapp --config
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    )
+endif()
+
+# ==============================================================================
+# 16. INSTALLATION RULES
+# ==============================================================================
+# Install targets
+install(TARGETS mylib myapp
+    EXPORT mylibTargets
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mylib
+)
+
+# Install configured header
+install(FILES
+    ${CMAKE_CURRENT_BINARY_DIR}/include/config.h
+    ${CMAKE_CURRENT_BINARY_DIR}/include/mylib_export.h
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mylib
+)
+
+# Install export targets
+install(EXPORT mylibTargets
+    FILE mylibTargets.cmake
+    NAMESPACE mylib::
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/mylib
+)
+
+# Create package config file
+configure_package_config_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/mylibConfig.cmake.in
+    ${CMAKE_CURRENT_BINARY_DIR}/mylibConfig.cmake
+    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/mylib
+)
+
+# Create package version file
+write_basic_package_version_file(
+    ${CMAKE_CURRENT_BINARY_DIR}/mylibConfigVersion.cmake
+    VERSION ${PROJECT_VERSION}
+    COMPATIBILITY SameMajorVersion
+)
+
+# Install package config files
+install(FILES
+    ${CMAKE_CURRENT_BINARY_DIR}/mylibConfig.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/mylibConfigVersion.cmake
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/mylib
+)
+
+# ==============================================================================
+# 17. PACKAGING (CPack)
+# ==============================================================================
+set(CPACK_PACKAGE_NAME ${PROJECT_NAME})
+set(CPACK_PACKAGE_VERSION ${PROJECT_VERSION})
+set(CPACK_PACKAGE_VENDOR "Your Company")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY ${PROJECT_DESCRIPTION})
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
+set(CPACK_RESOURCE_FILE_README "${CMAKE_CURRENT_SOURCE_DIR}/README.md")
+
+# Package generators
+set(CPACK_GENERATOR "TGZ;ZIP")
+if(UNIX AND NOT APPLE)
+    list(APPEND CPACK_GENERATOR "DEB")
+endif()
+
+include(CPack)
+
+# ==============================================================================
+# 18. STATUS MESSAGES AND SUMMARY
+# ==============================================================================
+message(STATUS "")
+message(STATUS "=== CMake Configuration Summary ===")
+message(STATUS "Project: ${PROJECT_NAME} ${PROJECT_VERSION}")
+message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
+message(STATUS "C++ standard: ${CMAKE_CXX_STANDARD}")
+message(STATUS "Install prefix: ${CMAKE_INSTALL_PREFIX}")
+message(STATUS "Build shared libs: ${BUILD_SHARED_LIBS}")
+message(STATUS "Build testing: ${BUILD_TESTING}")
+message(STATUS "Build examples: ${BUILD_EXAMPLES}")
+message(STATUS "Enable sanitizers: ${ENABLE_SANITIZERS}")
+message(STATUS "===================================")
+message(STATUS "")
+
+
+
+
+# 1. Install the missing JDK
+sudo ./setup_dependencies.sh
+
+# 2. Clean and Rebuild
+rm -rf build && mkdir build
+cmake -S . -B build
+cmake --build build
