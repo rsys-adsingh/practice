@@ -27,7 +27,7 @@ endif()
 # ==========================================
 # 1. C FILES AUTOMATION (src/c)
 # ==========================================
-# Find all .c files recursively (includes your moved Pointers content)
+# Find all .c files recursively
 file(GLOB_RECURSE C_SOURCES "src/c/*.c")
 
 foreach(sourcefile ${C_SOURCES})
@@ -78,17 +78,22 @@ endforeach()
 # 3. JAVA BUILDER (src/java)
 # ==========================================
 enable_language(Java)
-find_package(Java REQUIRED) # <--- THIS WAS MISSING
+find_package(Java REQUIRED)
 include(UseJava)
+
+set(CMAKE_JAVA_TARGET_OUTPUT_DIR ${CMAKE_BINARY_DIR}/bin)
 
 # Find all Java files
 file(GLOB_RECURSE JAVA_SOURCES "src/java/*.java")
 
-if(JAVA_SOURCES)
-    # Compile all Java files into a single JAR executable
-    add_jar(JavaPractice ${JAVA_SOURCES} ENTRY_POINT Main)
-    message(STATUS "☕ Configured Java files: Building 'JavaPractice.jar'")
-endif()
+foreach(javafile ${JAVA_SOURCES})
+    # Get filename without extension (e.g., "SortAlgo.java" -> "SortAlgo")
+    get_filename_component(classname ${javafile} NAME_WE)
+
+    # Create a separate JAR for this specific file
+    # Output: build/bin/java_SortAlgo.jar
+    add_jar(java_${classname} ${javafile} ENTRY_POINT ${classname})
+endforeach()
 
 # ==========================================
 # 4. SUB-PROJECTS (src/projects)
@@ -102,11 +107,11 @@ foreach(proj ${SUB_PROJECTS})
         add_subdirectory(${proj})
     endif()
 endforeach()
+
 # ==========================================
 # 5. UTILITY TARGETS
 # ==========================================
 # This allows you to run "cmake --build . --target install_deps"
-# It calls your shell script.
 add_custom_target(install_deps
     COMMAND sudo ${CMAKE_SOURCE_DIR}/setup_dependencies.sh
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
