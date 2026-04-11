@@ -2,8 +2,8 @@
 
 | Day | Problem | Completed Date |
 | :--- | :--- | :--- |
-| **Day 1** | [Two Sum](https://www.geeksforgeeks.org/check-if-pair-with-given-sum-exists-in-array/) | 11-Apr-2026 |
-| | [Best Time to Buy Sell Stock](https://www.geeksforgeeks.org/best-time-to-buy-and-sell-stock/) | 11-Apr-2026 |
+| **Day 1** | [Two Sum](https://www.geeksforgeeks.org/check-if-pair-with-given-sum-exists-in-array/) | **11-Apr-2026** (Iterate through the array while storing each number in a hash map, and instantly check if its complement (target - current_number) is already in the map to find your pair in a single pass.) |
+| | [Best Time to Buy Sell Stock](https://www.geeksforgeeks.org/best-time-to-buy-and-sell-stock/) | **11-Apr-2026** (Traverse the array while keeping track of the lowest price seen so far, and at each step, update your maximum profit by subtracting that lowest price from the current price.)|
 | | [Majority Element](https://www.geeksforgeeks.org/majority-element/) | |
 | | [Move Zeroes](https://www.geeksforgeeks.org/move-zeroes-end-array/) | |
 | | [Squares of Sorted Array](https://www.geeksforgeeks.org/sort-array-of-0s-1s-and-2s/) | |
