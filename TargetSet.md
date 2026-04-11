@@ -3,7 +3,7 @@
 | Day | Problem | Completed Date |
 | :--- | :--- | :--- |
 | **Day 1** | [Two Sum](https://www.geeksforgeeks.org/check-if-pair-with-given-sum-exists-in-array/) | 11-Apr-2026 |
-| | [Best Time to Buy Sell Stock](https://www.geeksforgeeks.org/best-time-to-buy-and-sell-stock/) | |
+| | [Best Time to Buy Sell Stock](https://www.geeksforgeeks.org/best-time-to-buy-and-sell-stock/) | 11-Apr-2026 |
 | | [Majority Element](https://www.geeksforgeeks.org/majority-element/) | |
 | | [Move Zeroes](https://www.geeksforgeeks.org/move-zeroes-end-array/) | |
 | | [Squares of Sorted Array](https://www.geeksforgeeks.org/sort-array-of-0s-1s-and-2s/) | |
