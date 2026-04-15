@@ -6,7 +6,7 @@
 | | [Best Time to Buy Sell Stock](https://www.geeksforgeeks.org/best-time-to-buy-and-sell-stock/) | **11-Apr-2026** (Traverse the array while keeping track of the lowest price seen so far, and at each step, update your maximum profit by subtracting that lowest price from the current price.)|
 | | [Majority Element](https://www.geeksforgeeks.org/majority-element/) | **13-Apr-2026** Use Moore's Voting Algorithm: Traverse the array to find a potential candidate by maintaining a counter (increment on match, decrement on mismatch, change candidate when the counter hits zero), then do a second full pass to verify if that candidate actually appears more than n/2 times.|
 | | [Move Zeroes](https://www.geeksforgeeks.org/move-zeroes-end-array/) | **15-Apr-2026** (Maintain a pointer for the next non-zero position, and as you iterate through the array, swap every non-zero element you find with the element at this pointer to organically push all zeros to the end.)|
-| | [Squares of Sorted Array](https://leetcode.com/problems/squares-of-a-sorted-array/) | |
+| | [Squares of Sorted Array](https://leetcode.com/problems/squares-of-a-sorted-array/) | **15-Apr-2026** (Use two pointers at opposite ends of the array, comparing their absolute values to sequentially place the larger square into a new result array from right to left.)|
 | | [Merge Sorted Array](https://www.geeksforgeeks.org/merge-two-sorted-arrays/) | |
 | **Day 2** | [Running Sum](https://www.geeksforgeeks.org/understanding-prefix-sums/) | |
 | | [Remove Element](https://www.geeksforgeeks.org/remove-elements-array/) | |
