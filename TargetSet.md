@@ -8,7 +8,7 @@
 | | [Move Zeroes](https://www.geeksforgeeks.org/move-zeroes-end-array/) | **15-Apr-2026** (Maintain a pointer for the next non-zero position, and as you iterate through the array, swap every non-zero element you find with the element at this pointer to organically push all zeros to the end.)|
 | | [Squares of Sorted Array](https://leetcode.com/problems/squares-of-a-sorted-array/) | **15-Apr-2026** (Use two pointers at opposite ends of the array, comparing their absolute values to sequentially place the larger square into a new result array from right to left.)|
 | | [Merge Sorted Array](https://www.geeksforgeeks.org/merge-two-sorted-arrays/) | **15-Apr-2026** (Start comparing from the end of the first array and the beginning of the second array, swapping elements when they are out of order, and finally sort both arrays individually to achieve the final merged state.)|
-| **Day 2** | [Running Sum](https://www.geeksforgeeks.org/understanding-prefix-sums/) | |
+| **Day 2** | [Running Sum](https://www.geeksforgeeks.org/understanding-prefix-sums/) | **15-Apr-2026** (Precompute a cumulative prefix sum array, allowing you to answer any [L, R] range query instantly in O(1) time by simply calculating prefix[R] - prefix[L - 1].)|
 | | [Remove Element](https://www.geeksforgeeks.org/remove-elements-array/) | |
 | | [Max Consecutive Ones](https://www.geeksforgeeks.org/find-the-maximum-number-of-consecutive-1s-in-an-array/) | |
 | | [Sort Array by Parity](https://www.geeksforgeeks.org/sort-array-by-parity/) | |
