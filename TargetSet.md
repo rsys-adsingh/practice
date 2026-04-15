@@ -11,7 +11,7 @@
 | **Day 2** | [Running Sum](https://www.geeksforgeeks.org/understanding-prefix-sums/) | **15-Apr-2026** (Precompute a cumulative prefix sum array, allowing you to answer any [L, R] range query instantly in O(1) time by simply calculating prefix[R] - prefix[L - 1].)|
 | | [Remove Element](https://leetcode.com/problems/remove-element/description/) | **15-Apr-2026** (Iterate backwards through the array, swapping every occurrence of the target value with the element at the current "end" pointer to push all unwanted values to the back.)|
 | | [Max Consecutive Ones](https://leetcode.com/problems/max-consecutive-ones/description/) | **15-Apr-2026** (Count the 1s as you go, save your highest streak, and reset your counting back to zero every time you hit a 0.)|
-| | [Sort Array by Parity](https://www.geeksforgeeks.org/sort-array-by-parity/) | |
+| | [Sort Array by Parity](https://leetcode.com/problems/sort-array-by-parity/) | **15-Apr-2026** (Use two pointers at opposite ends, check the left pointer when it is an odd number swap it with the right pointer and move the pointers accordingly until they meet.)|
 | **Day 3** | [Reverse Linked List](https://www.geeksforgeeks.org/reverse-a-linked-list/) | |
 | | [Merge Two Lists](https://www.geeksforgeeks.org/merge-two-sorted-linked-lists/) | |
 | | [Palindrome Linked List](https://www.geeksforgeeks.org/function-to-check-if-a-singly-linked-list-is-palindrome/) | |
