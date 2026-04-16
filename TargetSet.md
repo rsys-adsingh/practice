@@ -15,7 +15,7 @@
 | **Day 3** | [Reverse Linked List](https://www.geeksforgeeks.org/reverse-a-linked-list/) | **15-Apr-2026** (while(curr != NULL){ nextTemp = curr->next; curr->next = prev; prev = curr; curr = nextTemp; })|
 | | [Merge Two Lists](https://www.geeksforgeeks.org/merge-two-sorted-linked-lists/) | **15-Apr-2026** (Compare the current nodes of both lists to repeatedly attach the smaller one to your merged list, and when one list runs out, simply link the entire remainder of the other list to the end.)|
 | | [Palindrome Linked List](https://www.geeksforgeeks.org/function-to-check-if-a-singly-linked-list-is-palindrome/) | **16-Apr-2026** (Find the middle, reverse the second half, and compare both halves node by node.)|
-| | [Linked List Cycle](https://www.geeksforgeeks.org/detect-loop-in-a-linked-list/) | |
+| | [Linked List Cycle](https://www.geeksforgeeks.org/detect-loop-in-a-linked-list/) | **16-Apr-2026** (Move slow by 1 and fast by 2; if they meet, there’s a loop)|
 | **Day 4** | [Binary Tree Traversals](https://www.geeksforgeeks.org/tree-traversals-inorder-preorder-and-postorder/) | |
 | | [Max Depth](https://www.geeksforgeeks.org/find-the-maximum-depth-or-height-of-a-tree/) | |
 | | [Invert Tree](https://www.geeksforgeeks.org/invert-binary-tree/) | |
